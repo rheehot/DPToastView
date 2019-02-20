@@ -29,6 +29,7 @@ static id _DP_PreviousToastView = nil;
 @synthesize shadowOffset;
 @synthesize innerEdgeInsets;
 @synthesize yOffset;
+@synthesize horizontalMargin;
 
 @synthesize toastView;
 @synthesize windowConstraints;
@@ -81,6 +82,7 @@ static id _DP_PreviousToastView = nil;
         [self setYOffset:(theGravity == DPToastGravityCenter ? 0 : 60)];
         [self setFadeInDuration:0.15];
         [self setFadeOutDuration:0.5];
+        [self setHorizontalMargin:16];
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toastWasDismissed:) name:DPToastViewDidDismissNotification object:self];
         [self setCancelNotifications:NO];
@@ -208,16 +210,11 @@ static id _DP_PreviousToastView = nil;
     [label setTranslatesAutoresizingMaskIntoConstraints:NO];
     [toastView setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    NSNumber *maxWidth = @(floor(parentView.frame.size.width * 0.9) - self.innerEdgeInsets.left - self.innerEdgeInsets.right - (2.0 * self.borderWidth)), *maxHeight;
-    CGSize size = [label sizeThatFits:CGSizeMake([maxWidth floatValue], 0.0)];
-    maxWidth = @(size.width);
-    maxHeight = @(size.height);
-
-    [toastView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-==%d-[label(==%@)]-==%d-|", (int)self.innerEdgeInsets.left, maxWidth, (int)self.innerEdgeInsets.right]
+    [toastView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-==%d-[label]-==%d-|", (int)self.innerEdgeInsets.left, (int)self.innerEdgeInsets.right]
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(label)]];
-    [toastView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-==%d-[label(==%@)]-==%d-|", (int)self.innerEdgeInsets.top, maxHeight, (int)self.innerEdgeInsets.bottom]
+    [toastView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-==%d-[label]-==%d-|", (int)self.innerEdgeInsets.top, (int)self.innerEdgeInsets.bottom]
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(label)]];
@@ -238,6 +235,21 @@ static id _DP_PreviousToastView = nil;
         [parentView setNeedsUpdateConstraints];
         [windowConstraints removeAllObjects];
     }
+
+    [windowConstraints addObject:[NSLayoutConstraint constraintWithItem:toastView
+                                                              attribute:NSLayoutAttributeLeft
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:parentView
+                                                              attribute:NSLayoutAttributeLeft
+                                                             multiplier:1.0
+                                                               constant:self.horizontalMargin]];
+    [windowConstraints addObject:[NSLayoutConstraint constraintWithItem:toastView
+                                                              attribute:NSLayoutAttributeRight
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:parentView
+                                                              attribute:NSLayoutAttributeRight
+                                                             multiplier:1.0
+                                                               constant:-self.horizontalMargin]];
 
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     if (NO == [parentView isKindOfClass:[UIWindow class]]) {
