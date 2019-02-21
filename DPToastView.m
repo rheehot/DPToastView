@@ -30,6 +30,7 @@ static id _DP_PreviousToastView = nil;
 @synthesize innerEdgeInsets;
 @synthesize yOffset;
 @synthesize horizontalMargin;
+@synthesize additionalView;
 
 @synthesize toastView;
 @synthesize windowConstraints;
@@ -210,14 +211,62 @@ static id _DP_PreviousToastView = nil;
     [label setTranslatesAutoresizingMaskIntoConstraints:NO];
     [toastView setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    [toastView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|-==%d-[label]-==%d-|", (int)self.innerEdgeInsets.left, (int)self.innerEdgeInsets.right]
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(label)]];
-    [toastView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-==%d-[label]-==%d-|", (int)self.innerEdgeInsets.top, (int)self.innerEdgeInsets.bottom]
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(label)]];
+    [toastView addConstraint:[NSLayoutConstraint constraintWithItem:label
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:toastView
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1
+                                                           constant:innerEdgeInsets.top]];
+    [toastView addConstraint:[NSLayoutConstraint constraintWithItem:toastView
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:label
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1
+                                                           constant:innerEdgeInsets.bottom]];
+    [toastView addConstraint:[NSLayoutConstraint constraintWithItem:label
+                                                          attribute:NSLayoutAttributeLeft
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:toastView
+                                                          attribute:NSLayoutAttributeLeft
+                                                         multiplier:1
+                                                           constant:innerEdgeInsets.left]];
+    if (additionalView == nil) {
+        [toastView addConstraint:[NSLayoutConstraint constraintWithItem:toastView
+                                                              attribute:NSLayoutAttributeRight
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:label
+                                                              attribute:NSLayoutAttributeRight
+                                                             multiplier:1
+                                                               constant:innerEdgeInsets.right]];
+    } else {
+        [additionalView setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        [additionalView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [toastView addSubview:additionalView];
+        [label setTextAlignment:NSTextAlignmentLeft];
+        [toastView addConstraint:[NSLayoutConstraint constraintWithItem:additionalView
+                                                              attribute:NSLayoutAttributeCenterY
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:label
+                                                              attribute:NSLayoutAttributeCenterY
+                                                             multiplier:1
+                                                               constant:0]];
+        [toastView addConstraint:[NSLayoutConstraint constraintWithItem:toastView
+                                                              attribute:NSLayoutAttributeRight
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:additionalView
+                                                              attribute:NSLayoutAttributeRight
+                                                             multiplier:1
+                                                               constant:innerEdgeInsets.right]];
+        [toastView addConstraint:[NSLayoutConstraint constraintWithItem:additionalView
+                                                              attribute:NSLayoutAttributeLeft
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:label
+                                                              attribute:NSLayoutAttributeRight
+                                                             multiplier:1
+                                                               constant:16]];
+    }
 
     [self defineConstraintsForToastInView:parentView];
     return toastView;
@@ -243,13 +292,13 @@ static id _DP_PreviousToastView = nil;
                                                               attribute:NSLayoutAttributeLeft
                                                              multiplier:1.0
                                                                constant:self.horizontalMargin]];
-    [windowConstraints addObject:[NSLayoutConstraint constraintWithItem:toastView
+    [windowConstraints addObject:[NSLayoutConstraint constraintWithItem:parentView
                                                               attribute:NSLayoutAttributeRight
                                                               relatedBy:NSLayoutRelationEqual
-                                                                 toItem:parentView
+                                                                 toItem:toastView
                                                               attribute:NSLayoutAttributeRight
                                                              multiplier:1.0
-                                                               constant:-self.horizontalMargin]];
+                                                               constant:self.horizontalMargin]];
 
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     if (NO == [parentView isKindOfClass:[UIWindow class]]) {

@@ -44,6 +44,7 @@ typedef enum {
 @property (assign, nonatomic) UIEdgeInsets innerEdgeInsets;
 @property (assign, nonatomic) NSInteger yOffset;
 @property (assign, nonatomic) NSInteger horizontalMargin;
+@property (assign, nonatomic) UIView* additionalView;
 
 + (id)makeToast:(id)message;
 + (id)makeToast:(id)message gravity:(DPToastGravity)gravity;
