@@ -245,6 +245,15 @@ static id _DP_PreviousToastView = nil;
         [rightView setTranslatesAutoresizingMaskIntoConstraints:NO];
         [toastView addSubview:rightView];
         [label setTextAlignment:NSTextAlignmentLeft];
+        NSLayoutConstraint *rightViewMaxWidthConstraint = [NSLayoutConstraint constraintWithItem:rightView
+                                                                                       attribute:NSLayoutAttributeWidth
+                                                                                       relatedBy:NSLayoutRelationEqual
+                                                                                          toItem:nil
+                                                                                       attribute:NSLayoutAttributeNotAnAttribute
+                                                                                      multiplier:1
+                                                                                        constant:100];
+        rightViewMaxWidthConstraint.priority = UILayoutPriorityDefaultLow;
+        [toastView addConstraint:rightViewMaxWidthConstraint];
         [toastView addConstraint:[NSLayoutConstraint constraintWithItem:rightView
                                                               attribute:NSLayoutAttributeCenterY
                                                               relatedBy:NSLayoutRelationEqual
