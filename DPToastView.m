@@ -30,7 +30,7 @@ static id _DP_PreviousToastView = nil;
 @synthesize innerEdgeInsets;
 @synthesize yOffset;
 @synthesize horizontalMargin;
-@synthesize additionalView;
+@synthesize rightView;
 
 @synthesize toastView;
 @synthesize windowConstraints;
@@ -232,7 +232,7 @@ static id _DP_PreviousToastView = nil;
                                                           attribute:NSLayoutAttributeLeft
                                                          multiplier:1
                                                            constant:innerEdgeInsets.left]];
-    if (additionalView == nil) {
+    if (rightView == nil) {
         [toastView addConstraint:[NSLayoutConstraint constraintWithItem:toastView
                                                               attribute:NSLayoutAttributeRight
                                                               relatedBy:NSLayoutRelationEqual
@@ -241,11 +241,11 @@ static id _DP_PreviousToastView = nil;
                                                              multiplier:1
                                                                constant:innerEdgeInsets.right]];
     } else {
-        [additionalView setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-        [additionalView setTranslatesAutoresizingMaskIntoConstraints:NO];
-        [toastView addSubview:additionalView];
+        [rightView setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        [rightView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [toastView addSubview:rightView];
         [label setTextAlignment:NSTextAlignmentLeft];
-        [toastView addConstraint:[NSLayoutConstraint constraintWithItem:additionalView
+        [toastView addConstraint:[NSLayoutConstraint constraintWithItem:rightView
                                                               attribute:NSLayoutAttributeCenterY
                                                               relatedBy:NSLayoutRelationEqual
                                                                  toItem:label
@@ -255,11 +255,11 @@ static id _DP_PreviousToastView = nil;
         [toastView addConstraint:[NSLayoutConstraint constraintWithItem:toastView
                                                               attribute:NSLayoutAttributeRight
                                                               relatedBy:NSLayoutRelationEqual
-                                                                 toItem:additionalView
+                                                                 toItem:rightView
                                                               attribute:NSLayoutAttributeRight
                                                              multiplier:1
                                                                constant:innerEdgeInsets.right]];
-        [toastView addConstraint:[NSLayoutConstraint constraintWithItem:additionalView
+        [toastView addConstraint:[NSLayoutConstraint constraintWithItem:rightView
                                                               attribute:NSLayoutAttributeLeft
                                                               relatedBy:NSLayoutRelationEqual
                                                                  toItem:label
