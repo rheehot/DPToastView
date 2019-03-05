@@ -275,6 +275,20 @@ static id _DP_PreviousToastView = nil;
                                                               attribute:NSLayoutAttributeRight
                                                              multiplier:1
                                                                constant:16]];
+        [toastView addConstraint:[NSLayoutConstraint constraintWithItem:rightView
+                                                              attribute:NSLayoutAttributeTop
+                                                              relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                 toItem:toastView
+                                                              attribute:NSLayoutAttributeTop
+                                                             multiplier:1
+                                                               constant:0]];
+        [toastView addConstraint:[NSLayoutConstraint constraintWithItem:toastView
+                                                              attribute:NSLayoutAttributeBottom
+                                                              relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                 toItem:rightView
+                                                              attribute:NSLayoutAttributeBottom
+                                                             multiplier:1
+                                                               constant:0]];
     }
 
     [self defineConstraintsForToastInView:parentView];
