@@ -195,7 +195,7 @@ static id _DP_PreviousToastView = nil;
     [self setToastView:[[UIView alloc] init]];
 
     [toastView setBackgroundColor:[self backgroundColor]];
-    [toastView setUserInteractionEnabled:NO];
+    [toastView setUserInteractionEnabled:YES];
     [toastView.layer setBorderColor:[[self borderColor] CGColor]];
     [toastView.layer setBorderWidth:[self borderWidth]];
     [toastView.layer setCornerRadius:[self cornerRadius]];
