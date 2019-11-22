@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D12673FC23869FA60013B5CE /* DPToastView.h in Headers */ = {isa = PBXBuildFile; fileRef = D12673FA23869FA60013B5CE /* DPToastView.h */; };
+		D12673FC23869FA60013B5CE /* DPToastView.h in Headers */ = {isa = PBXBuildFile; fileRef = D12673FA23869FA60013B5CE /* DPToastView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D12673FE23869FC30013B5CE /* DPToastView.m in Sources */ = {isa = PBXBuildFile; fileRef = D12673FD23869FC30013B5CE /* DPToastView.m */; };
 		D12674012386A0390013B5CE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D12674002386A0390013B5CE /* UIKit.framework */; platformFilter = ios; };
 /* End PBXBuildFile section */
