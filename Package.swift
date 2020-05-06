@@ -19,8 +19,8 @@ let package = Package(
     targets: [
         .target(
             name: "DPToastView",
-            dependencies: [],
-            path: "",
+            dependencies: ["objc"],
+            path: "Sources",
             exclude: []
         ),
     ]
